@@ -2,6 +2,7 @@ package lk.ijse.gdse68.aad.spring_pos_system_api.controller;
 
 import lk.ijse.gdse68.aad.spring_pos_system_api.custom.CustomerResponse;
 import lk.ijse.gdse68.aad.spring_pos_system_api.dto.CustomerDto;
+import lk.ijse.gdse68.aad.spring_pos_system_api.exception.CustomerNotFound;
 import lk.ijse.gdse68.aad.spring_pos_system_api.exception.CustomerNotFoundException;
 import lk.ijse.gdse68.aad.spring_pos_system_api.exception.DataPersistFailException;
 import lk.ijse.gdse68.aad.spring_pos_system_api.service.CustomerService;
@@ -70,9 +71,25 @@ public class CustomerController {
             customerService.updateCustomer(customerId, customerDto);
             logger.info("customer updated successfully");
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }catch (CustomerNotFoundException e){
+        }catch (CustomerNotFound e){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @DeleteMapping(value ="/{customerId}" )
+    public ResponseEntity<Void> deleteCustomer(@PathVariable ("customerId") String customerId) {
+        try {
+            customerService.deleteCustomer(customerId);
+            logger.info(customerId+"customer deleted!!");
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+
+
+        } catch (CustomerNotFound e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
+        } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
