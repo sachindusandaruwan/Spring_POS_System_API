@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("api/v1/customer")
 @RequiredArgsConstructor
@@ -45,4 +47,16 @@ public class CustomerController {
     public CustomerResponse getCustomer(@PathVariable("customerId")String customerId){
         return customerService.getSelectCustomer(customerId);
     }
+    @GetMapping(value = "allcustomers",produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<CustomerDto> getAllCustomers() {
+        List<CustomerDto> customerDtos = customerService.getAllCustomers();
+        logger.info("Fetched {} customers from the database", customerDtos.size());  // Log the number of customers fetched
+
+        // Log each customer in the list
+        for (CustomerDto customer : customerDtos) {
+            logger.info("Customer DTO: {}", customer);  // Assuming CustomerDto has a proper toString() method
+        }
+        return customerDtos;  // Return the list of customers
+    }
+
 }
