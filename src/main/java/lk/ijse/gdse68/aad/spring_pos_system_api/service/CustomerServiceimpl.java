@@ -6,12 +6,14 @@ import lk.ijse.gdse68.aad.spring_pos_system_api.custom.CustomerResponse;
 import lk.ijse.gdse68.aad.spring_pos_system_api.dao.CustomerDao;
 import lk.ijse.gdse68.aad.spring_pos_system_api.dto.CustomerDto;
 import lk.ijse.gdse68.aad.spring_pos_system_api.entity.CustomerEntity;
+import lk.ijse.gdse68.aad.spring_pos_system_api.exception.CustomerNotFoundException;
 import lk.ijse.gdse68.aad.spring_pos_system_api.exception.DataPersistFailException;
 import lk.ijse.gdse68.aad.spring_pos_system_api.util.Mapping;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -46,5 +48,17 @@ public class CustomerServiceimpl implements CustomerService {
     @Override
     public List<CustomerDto> getAllCustomers() {
         return mapping.convertToDtos(customerDao.findAll());
+    }
+
+    @Override
+    public void updateCustomer(String customerId, CustomerDto customerDto) {
+        Optional<CustomerEntity> tempCustomerById = customerDao.findById(customerId);
+        if (!tempCustomerById.isPresent()) {
+            throw new CustomerNotFoundException("customer not found");
+        }else {
+            tempCustomerById.get().setCustomerName(customerDto.getCustomerName());
+            tempCustomerById.get().setCustomerAddress(customerDto.getCustomerAddress());
+            tempCustomerById.get().setCustomerSalary(customerDto.getCustomerSalary());
+        }
     }
 }

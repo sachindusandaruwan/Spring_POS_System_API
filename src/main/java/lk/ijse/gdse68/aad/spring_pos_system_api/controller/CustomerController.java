@@ -2,6 +2,7 @@ package lk.ijse.gdse68.aad.spring_pos_system_api.controller;
 
 import lk.ijse.gdse68.aad.spring_pos_system_api.custom.CustomerResponse;
 import lk.ijse.gdse68.aad.spring_pos_system_api.dto.CustomerDto;
+import lk.ijse.gdse68.aad.spring_pos_system_api.exception.CustomerNotFoundException;
 import lk.ijse.gdse68.aad.spring_pos_system_api.exception.DataPersistFailException;
 import lk.ijse.gdse68.aad.spring_pos_system_api.service.CustomerService;
 import lombok.RequiredArgsConstructor;
@@ -57,6 +58,23 @@ public class CustomerController {
             logger.info("Customer DTO: {}", customer);  // Assuming CustomerDto has a proper toString() method
         }
         return customerDtos;  // Return the list of customers
+    }
+
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PatchMapping(value = "/{customerId}",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Void> updateCustomer(@PathVariable ("customerId") String customerId, @RequestBody CustomerDto customerDto) {
+        try {
+            if(customerDto == null && (customerId != null||customerId.isEmpty())) {
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            }
+            customerService.updateCustomer(customerId, customerDto);
+            logger.info("customer updated successfully");
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }catch (CustomerNotFoundException e){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
 }
