@@ -1,5 +1,6 @@
 package lk.ijse.gdse68.aad.spring_pos_system_api.controller;
 
+import lk.ijse.gdse68.aad.spring_pos_system_api.custom.CustomerResponse;
 import lk.ijse.gdse68.aad.spring_pos_system_api.dto.CustomerDto;
 import lk.ijse.gdse68.aad.spring_pos_system_api.exception.DataPersistFailException;
 import lk.ijse.gdse68.aad.spring_pos_system_api.service.CustomerService;
@@ -39,5 +40,9 @@ public class CustomerController {
               return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
           }
       }
+    }
+    @GetMapping("/{customerId}")
+    public CustomerResponse getCustomer(@PathVariable("customerId")String customerId){
+        return customerService.getSelectCustomer(customerId);
     }
 }

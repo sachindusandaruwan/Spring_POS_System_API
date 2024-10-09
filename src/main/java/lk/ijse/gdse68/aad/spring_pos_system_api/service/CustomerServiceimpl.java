@@ -1,6 +1,8 @@
 package lk.ijse.gdse68.aad.spring_pos_system_api.service;
 
 import jakarta.transaction.Transactional;
+import lk.ijse.gdse68.aad.spring_pos_system_api.custom.CustomerErrorResponse;
+import lk.ijse.gdse68.aad.spring_pos_system_api.custom.CustomerResponse;
 import lk.ijse.gdse68.aad.spring_pos_system_api.dao.CustomerDao;
 import lk.ijse.gdse68.aad.spring_pos_system_api.dto.CustomerDto;
 import lk.ijse.gdse68.aad.spring_pos_system_api.entity.CustomerEntity;
@@ -27,6 +29,15 @@ public class CustomerServiceimpl implements CustomerService {
             if (savedCustomer == null && savedCustomer.getCustomerId() == null) {
                 throw new DataPersistFailException("Customer not found");
             }
+        }
+    }
+
+    @Override
+    public CustomerResponse getSelectCustomer(String customerId) {
+        if (customerDao.existsById(customerId)){
+            return mapping.convertToDTO(customerDao.getById(customerId));
+        }else {
+            return new CustomerErrorResponse(0,"Customer not saved!!");
         }
     }
 }

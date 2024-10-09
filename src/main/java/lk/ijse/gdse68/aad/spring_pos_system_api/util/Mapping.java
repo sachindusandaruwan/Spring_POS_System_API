@@ -18,8 +18,12 @@ public class Mapping {
         return modelMapper.map(customerDto, CustomerEntity.class);
     }
 
-    public CustomerDto convertToDto(CustomerDto customerDto){
-        return modelMapper.map(customerDto, CustomerDto.class);
+//    public CustomerDto convertToDto(CustomerEntity customerEntity){
+//        return modelMapper.map(customerEntity, CustomerDto.class);
+//    }
+
+    public CustomerDto convertToDTO(CustomerEntity customerEntity) {
+        return modelMapper.map(customerEntity, CustomerDto.class);
     }
 
     public List<CustomerDto> convertToDtos(List<CustomerEntity> customerList){

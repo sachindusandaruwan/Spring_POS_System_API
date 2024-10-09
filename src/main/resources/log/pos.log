@@ -79,3 +79,5 @@
 15:36:49.544 [RMI TCP Connection(2)-127.0.0.1] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
 15:36:49.742 [RMI TCP Connection(2)-127.0.0.1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 814 ms
 15:37:20.815 [http-nio-8080-exec-7] INFO  l.i.g.a.s.c.CustomerController - Customer saved successfully
+19:42:17.954 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+19:42:17.964 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
