@@ -8,12 +8,15 @@ import lk.ijse.gdse68.aad.spring_pos_system_api.dao.ItemDao;
 import lk.ijse.gdse68.aad.spring_pos_system_api.dto.ItemDto;
 import lk.ijse.gdse68.aad.spring_pos_system_api.entity.CustomerEntity;
 import lk.ijse.gdse68.aad.spring_pos_system_api.entity.ItemEntity;
+import lk.ijse.gdse68.aad.spring_pos_system_api.exception.CustomerNotFound;
 import lk.ijse.gdse68.aad.spring_pos_system_api.exception.DataPersistFailException;
+import lk.ijse.gdse68.aad.spring_pos_system_api.exception.ItemNotFound;
 import lk.ijse.gdse68.aad.spring_pos_system_api.util.Mapping;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -50,5 +53,17 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public List<ItemDto> getAllItems() {
         return mapping.convertToItemDtos(itemDao.findAll());
+    }
+
+    @Override
+    public void updateItem(String itemCode, ItemDto itemDto) {
+        Optional<ItemEntity> tempItemByItemCode = itemDao.findById(itemCode);
+        if (!tempItemByItemCode.isPresent()) {
+            throw new ItemNotFound("Item not found");
+        }else {
+            tempItemByItemCode.get().setItemName(itemDto.getItemName());
+            tempItemByItemCode.get().setItemQty(itemDto.getItemQty());
+            tempItemByItemCode.get().setItemPrice(itemDto.getItemPrice());
+        }
     }
 }

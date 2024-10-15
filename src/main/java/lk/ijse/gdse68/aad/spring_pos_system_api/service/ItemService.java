@@ -11,4 +11,6 @@ public interface ItemService {
      ItemResponse getSelectItem(String itemCode);
 
      List<ItemDto> getAllItems();
+
+     void updateItem(String itemCode, ItemDto itemDto);
 }

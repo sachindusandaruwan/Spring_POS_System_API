@@ -4,6 +4,7 @@ import lk.ijse.gdse68.aad.spring_pos_system_api.custom.CustomerResponse;
 import lk.ijse.gdse68.aad.spring_pos_system_api.custom.ItemResponse;
 import lk.ijse.gdse68.aad.spring_pos_system_api.dto.CustomerDto;
 import lk.ijse.gdse68.aad.spring_pos_system_api.dto.ItemDto;
+import lk.ijse.gdse68.aad.spring_pos_system_api.exception.CustomerNotFound;
 import lk.ijse.gdse68.aad.spring_pos_system_api.exception.DataPersistFailException;
 import lk.ijse.gdse68.aad.spring_pos_system_api.service.ItemService;
 import lombok.RequiredArgsConstructor;
@@ -59,7 +60,24 @@ public class ItemController {
         for (ItemDto itemDto : ItemDtos) {
             logger.info("Item DTO: {}", itemDto);
         }
-        return ItemDtos;  // Return the list of customers
+        return ItemDtos;
+    }
+
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PatchMapping(value = "/{itemCode}",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Void> updateItem(@PathVariable ("itemCode") String itemCode, @RequestBody ItemDto itemDto) {
+        try {
+            if(itemDto == null && (itemCode != null||itemCode.isEmpty())) {
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            }
+            itemService.updateItem(itemCode, itemDto);
+            logger.info("Item updated successfully");
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }catch (CustomerNotFound e){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
 }
