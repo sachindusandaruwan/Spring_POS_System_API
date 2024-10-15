@@ -66,4 +66,17 @@ public class ItemServiceImpl implements ItemService {
             tempItemByItemCode.get().setItemPrice(itemDto.getItemPrice());
         }
     }
+
+    @Override
+    public void deleteItem(String itemCode) {
+        Optional<ItemEntity> findCode=itemDao.findById(itemCode);
+
+        if(!findCode.isPresent()){
+            throw new ItemNotFound("Item is not found!!");
+
+        }else {
+            itemDao.deleteById(itemCode);
+
+        }
+    }
 }
