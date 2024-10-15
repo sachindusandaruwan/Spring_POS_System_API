@@ -13,6 +13,8 @@ import lk.ijse.gdse68.aad.spring_pos_system_api.util.Mapping;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @Transactional
 public class ItemServiceImpl implements ItemService {
@@ -43,5 +45,10 @@ public class ItemServiceImpl implements ItemService {
         }else {
             return new ItemErrorResponse(0,"Item not saved!!");
         }
+    }
+
+    @Override
+    public List<ItemDto> getAllItems() {
+        return mapping.convertToItemDtos(itemDao.findAll());
     }
 }

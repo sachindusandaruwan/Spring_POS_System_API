@@ -2,6 +2,7 @@ package lk.ijse.gdse68.aad.spring_pos_system_api.controller;
 
 import lk.ijse.gdse68.aad.spring_pos_system_api.custom.CustomerResponse;
 import lk.ijse.gdse68.aad.spring_pos_system_api.custom.ItemResponse;
+import lk.ijse.gdse68.aad.spring_pos_system_api.dto.CustomerDto;
 import lk.ijse.gdse68.aad.spring_pos_system_api.dto.ItemDto;
 import lk.ijse.gdse68.aad.spring_pos_system_api.exception.DataPersistFailException;
 import lk.ijse.gdse68.aad.spring_pos_system_api.service.ItemService;
@@ -13,6 +14,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/item")
@@ -47,4 +50,16 @@ public class ItemController {
     public ItemResponse getItem(@PathVariable("itemCode")String itemCode){
         return itemService.getSelectItem(itemCode);
     }
+
+    @GetMapping(value = "allItems",produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<ItemDto> getAllItems() {
+        List<ItemDto> ItemDtos = itemService.getAllItems();
+        logger.info("Fetched {} Items from the database", ItemDtos.size());
+
+        for (ItemDto itemDto : ItemDtos) {
+            logger.info("Item DTO: {}", itemDto);
+        }
+        return ItemDtos;  // Return the list of customers
+    }
+
 }
