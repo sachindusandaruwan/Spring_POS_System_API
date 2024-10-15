@@ -1,6 +1,9 @@
 package lk.ijse.gdse68.aad.spring_pos_system_api.service;
 
 import jakarta.transaction.Transactional;
+import lk.ijse.gdse68.aad.spring_pos_system_api.custom.CustomerErrorResponse;
+import lk.ijse.gdse68.aad.spring_pos_system_api.custom.ItemErrorResponse;
+import lk.ijse.gdse68.aad.spring_pos_system_api.custom.ItemResponse;
 import lk.ijse.gdse68.aad.spring_pos_system_api.dao.ItemDao;
 import lk.ijse.gdse68.aad.spring_pos_system_api.dto.ItemDto;
 import lk.ijse.gdse68.aad.spring_pos_system_api.entity.CustomerEntity;
@@ -30,6 +33,15 @@ public class ItemServiceImpl implements ItemService {
             if (savedItem == null && savedItem.getItemCode() == null) {
                 throw new DataPersistFailException("Item not found");
             }
+        }
+    }
+
+    @Override
+    public ItemResponse getSelectItem(String itemCode) {
+        if (itemDao.existsById(itemCode)){
+            return mapping.convertToDto(itemDao.getById(itemCode));
+        }else {
+            return new ItemErrorResponse(0,"Item not saved!!");
         }
     }
 }

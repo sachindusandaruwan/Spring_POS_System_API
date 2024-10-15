@@ -1,5 +1,7 @@
 package lk.ijse.gdse68.aad.spring_pos_system_api.controller;
 
+import lk.ijse.gdse68.aad.spring_pos_system_api.custom.CustomerResponse;
+import lk.ijse.gdse68.aad.spring_pos_system_api.custom.ItemResponse;
 import lk.ijse.gdse68.aad.spring_pos_system_api.dto.ItemDto;
 import lk.ijse.gdse68.aad.spring_pos_system_api.exception.DataPersistFailException;
 import lk.ijse.gdse68.aad.spring_pos_system_api.service.ItemService;
@@ -39,6 +41,10 @@ public class ItemController {
                 return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
             }
         }
+    }
 
+    @GetMapping("/{itemCode}")
+    public ItemResponse getItem(@PathVariable("itemCode")String itemCode){
+        return itemService.getSelectItem(itemCode);
     }
 }
