@@ -3,7 +3,6 @@ package lk.ijse.gdse68.aad.spring_pos_system_api.controller;
 import lk.ijse.gdse68.aad.spring_pos_system_api.custom.CustomerResponse;
 import lk.ijse.gdse68.aad.spring_pos_system_api.dto.CustomerDto;
 import lk.ijse.gdse68.aad.spring_pos_system_api.exception.CustomerNotFound;
-import lk.ijse.gdse68.aad.spring_pos_system_api.exception.CustomerNotFoundException;
 import lk.ijse.gdse68.aad.spring_pos_system_api.exception.DataPersistFailException;
 import lk.ijse.gdse68.aad.spring_pos_system_api.service.CustomerService;
 import lombok.RequiredArgsConstructor;

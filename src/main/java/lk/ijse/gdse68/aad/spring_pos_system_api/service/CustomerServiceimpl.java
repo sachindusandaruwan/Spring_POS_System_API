@@ -6,7 +6,7 @@ import lk.ijse.gdse68.aad.spring_pos_system_api.custom.CustomerResponse;
 import lk.ijse.gdse68.aad.spring_pos_system_api.dao.CustomerDao;
 import lk.ijse.gdse68.aad.spring_pos_system_api.dto.CustomerDto;
 import lk.ijse.gdse68.aad.spring_pos_system_api.entity.CustomerEntity;
-import lk.ijse.gdse68.aad.spring_pos_system_api.exception.CustomerNotFoundException;
+import lk.ijse.gdse68.aad.spring_pos_system_api.exception.CustomerNotFound;
 import lk.ijse.gdse68.aad.spring_pos_system_api.exception.DataPersistFailException;
 import lk.ijse.gdse68.aad.spring_pos_system_api.util.Mapping;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +21,7 @@ public class CustomerServiceimpl implements CustomerService {
 
     @Autowired
     private CustomerDao customerDao;
+
     @Autowired
     private Mapping mapping;
 
@@ -54,7 +55,7 @@ public class CustomerServiceimpl implements CustomerService {
     public void updateCustomer(String customerId, CustomerDto customerDto) {
         Optional<CustomerEntity> tempCustomerById = customerDao.findById(customerId);
         if (!tempCustomerById.isPresent()) {
-            throw new CustomerNotFoundException("customer not found");
+            throw new CustomerNotFound("customer not found");
         }else {
             tempCustomerById.get().setCustomerName(customerDto.getCustomerName());
             tempCustomerById.get().setCustomerAddress(customerDto.getCustomerAddress());
@@ -68,7 +69,7 @@ public class CustomerServiceimpl implements CustomerService {
         Optional<CustomerEntity> findId=customerDao.findById(customerId);
 
         if(!findId.isPresent()){
-            throw new CustomerNotFoundException("Customer is not found!!");
+            throw new CustomerNotFound("Customer is not found!!");
 
         }else {
             customerDao.deleteById(customerId);
