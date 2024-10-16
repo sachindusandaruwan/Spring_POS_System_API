@@ -2,8 +2,12 @@ package lk.ijse.gdse68.aad.spring_pos_system_api.util;
 
 import lk.ijse.gdse68.aad.spring_pos_system_api.dto.CustomerDto;
 import lk.ijse.gdse68.aad.spring_pos_system_api.dto.ItemDto;
+import lk.ijse.gdse68.aad.spring_pos_system_api.dto.OrderDetailDto;
+import lk.ijse.gdse68.aad.spring_pos_system_api.dto.OrderDto;
 import lk.ijse.gdse68.aad.spring_pos_system_api.entity.CustomerEntity;
 import lk.ijse.gdse68.aad.spring_pos_system_api.entity.ItemEntity;
+import lk.ijse.gdse68.aad.spring_pos_system_api.entity.OrderDetailEntity;
+import lk.ijse.gdse68.aad.spring_pos_system_api.entity.OrderEntity;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,5 +49,15 @@ public class Mapping {
 
     public List<ItemDto> convertToItemDtos(List<ItemEntity> itemList){
         return modelMapper.map(itemList, new TypeToken<List<ItemDto>>(){}.getType());
+    }
+
+    //Order
+    public OrderEntity convertToOrderEntity(OrderDto dto){
+        return modelMapper.map(dto, OrderEntity.class);
+    }
+
+
+    public OrderDetailEntity convertToOrderDetailEntity(OrderDetailDto dto) {
+        return modelMapper.map(dto, OrderDetailEntity.class);
     }
 }

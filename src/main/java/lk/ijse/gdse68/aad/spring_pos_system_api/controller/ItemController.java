@@ -16,6 +16,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
@@ -30,7 +31,23 @@ public class ItemController {
    private final ItemService itemService;
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> saveItem(@RequestBody ItemDto itemDto) {
+    public ResponseEntity<String> saveItem(@RequestBody ItemDto itemDto) {
+
+        if (itemDto.getItemCode() == null || !itemDto.getItemCode().matches("^I\\d{4}$")) {
+            return new ResponseEntity<>("Item code is empty or invalid! ", HttpStatus.BAD_REQUEST);
+        }
+
+        if (itemDto.getItemName() == null || !itemDto.getItemName().matches("^([A-Z][a-z]+)(\\s[A-Z][a-z]+)*$")) {
+            return new ResponseEntity<>("Item name is empty or invalid! ", HttpStatus.BAD_REQUEST);
+        }
+        if (itemDto.getItemQty() <= 0) {
+            return new ResponseEntity<>("Item quantity is empty or invalid! It must be greater than 0.", HttpStatus.BAD_REQUEST);
+        }
+
+        if (itemDto.getItemPrice() <= 0) {
+            return new ResponseEntity<>("Item price is empty or invalid!", HttpStatus.BAD_REQUEST);
+        }
+
         if (itemDto == null) {
             logger.error("ItemDto is null");
             return new  ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -65,7 +82,25 @@ public class ItemController {
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @PatchMapping(value = "/{itemCode}",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> updateItem(@PathVariable ("itemCode") String itemCode, @RequestBody ItemDto itemDto) {
+    public ResponseEntity<String> updateItem(@PathVariable ("itemCode") String itemCode, @RequestBody ItemDto itemDto) {
+
+
+        if (itemDto.getItemCode() == null || !itemDto.getItemCode().matches("^I\\d{4}$")) {
+            return new ResponseEntity<>("Item code is empty or invalid! ", HttpStatus.BAD_REQUEST);
+        }
+
+        if (itemDto.getItemName() == null || !itemDto.getItemName().matches("^([A-Z][a-z]+)(\\s[A-Z][a-z]+)*$")) {
+            return new ResponseEntity<>("Item name is empty or invalid! ", HttpStatus.BAD_REQUEST);
+        }
+        if (itemDto.getItemQty() <= 0) {
+            return new ResponseEntity<>("Item quantity is empty or invalid! It must be greater than 0.", HttpStatus.BAD_REQUEST);
+        }
+
+        if (itemDto.getItemPrice() <= 0) {
+            return new ResponseEntity<>("Item price is empty or invalid!", HttpStatus.BAD_REQUEST);
+        }
+
+
         try {
             if(itemDto == null && (itemCode != null||itemCode.isEmpty())) {
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
